@@ -12,7 +12,7 @@ import (
 
 // ResolveID tries to resolve a SteamID 64 from a search query.
 // It checks for queries such as vanity url's or SteamID's.
-// If an invalid apiKey is used, a SteamID 64 will still be if
+// If an invalid API key is used, a SteamID 64 will still be if
 // the query is not a vanity url.
 // If no SteamID 64 could be resolved then 0 is returned.
 func ResolveID(query, apiKey string) ID64 {
