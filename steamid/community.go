@@ -55,12 +55,12 @@ id64:
 
 id32:
 	if regexp.MustCompile(`^\d{9}$`).MatchString(query) {
-		id64, err := strconv.ParseInt(query, 10, 64)
+		id32, err := strconv.ParseInt(query, 10, 64)
 		if err != nil {
 			goto id3
 		}
 
-		return ID64(id64)
+		return ID32(id32).To64()
 	}
 
 id3:
