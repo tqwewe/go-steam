@@ -18,7 +18,7 @@ var (
 
 // ResolveID attempts to resolve a SteamID 64 from a search query.
 // It checks for queries such as vanity url's or SteamID's.
-// If an invalid API key is used, a SteamID 64 may still be if resolved
+// If an invalid API key is used, a SteamID 64 may still be resolved if
 // the query is not a vanity url.
 // If no SteamID 64 could be resolved from the query, then 0 is returned.
 func ResolveID(query, apiKey string) ID64 {
