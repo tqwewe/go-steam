@@ -10,11 +10,17 @@ import (
 	"strings"
 )
 
-// ResolveID tries to resolve a SteamID 64 from a search query.
+var (
+	idRegex   = regexp.MustCompile(`^STEAM_0:(0|1):[0-9]{1}[0-9]{0,8}$`)
+	id3Regex  = regexp.MustCompile(`(\[)?U:1:\d+(\])?`)
+	id64Regex = regexp.MustCompile(`^\d{17}$`)
+)
+
+// ResolveID attempts to resolve a SteamID 64 from a search query.
 // It checks for queries such as vanity url's or SteamID's.
-// If an invalid API key is used, a SteamID 64 will still be if
+// If an invalid API key is used, a SteamID 64 may still be if resolved
 // the query is not a vanity url.
-// If no SteamID 64 could be resolved then 0 is returned.
+// If no SteamID 64 could be resolved from the query, then 0 is returned.
 func ResolveID(query, apiKey string) ID64 {
 	query = strings.Replace(query, " ", "", -1)
 	query = strings.Trim(query, "/")
@@ -33,7 +39,7 @@ func ResolveID(query, apiKey string) ID64 {
 	}
 
 isID:
-	if regexp.MustCompile(`^STEAM_0:(0|1):[0-9]{1}[0-9]{0,8}$`).MatchString(query) {
+	if idRegex.MatchString(query) {
 		id64 := ID(query).To64()
 
 		if len(strconv.FormatUint(uint64(id64), 10)) != 17 {
@@ -44,7 +50,7 @@ isID:
 	}
 
 isID3:
-	if regexp.MustCompile(`(\[)?U:1:\d+(\])?`).MatchString(strings.ToUpper(query)) {
+	if id3Regex.MatchString(strings.ToUpper(query)) {
 		return ID3(query).To64()
 	}
 
@@ -97,7 +103,7 @@ isID3:
 	}
 
 isID64:
-	if regexp.MustCompile(`^\d{17}$`).MatchString(query) {
+	if id64Regex.MatchString(query) {
 		id64, err := strconv.ParseInt(query, 10, 64)
 		if err != nil {
 			goto isID32
