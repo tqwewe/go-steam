@@ -1,9 +1,16 @@
 # go-steam
-Go-Steam is a repository for Steam development in Golang and is planned to contain multiple packages to make developing Steam-related projects as simple and practicable as possible.
+Go-Steam is a repository for Steam development in Golang and is planned to contain multiple packages to make developing Steam-related projects as simple and practicable and simple as possible.
 
 ### About
-I am hoping for this to be a collaborative project with as many contributers as possible.
-There is only one package developed so far called steamid which contains function to convert a SteamID from and to any existing format along with resolving a SteamID 64 from a search query. I will be extremely grateful for any ideas and/or contributions.
+Hopefully this project can be a collaborative project with as many contributers as possible.
+
+So far there are two packages, [steamid](go-steam/tree/master/steamid) and [steamapi](go-steam/tree/master/steamapi). The [steamid](go-steam/tree/master/steamid) package is very stable and contains functions for converting a Steam ID to and from the following types: 
+ - Community ID
+ - ID64
+ - ID32
+ - ID3
+
+The [steamapi](go-steam/tree/master/steamapi) package aims to contain functions for every existing Steam API method available. It still has a little way to go.
 
 ### Contributing
 The official guide [Contributing to Open Source on GitHub](https://guides.github.com/activities/contributing-to-open-source/#contributing) explains in detail how you can contribute to a project.
@@ -12,6 +19,6 @@ A quick explination:
 
 1. Fork it
 2. Create your feature branch (`git checkout -b new-feature`)
-3. Commit your changes (`git commit -am 'Some cool reflection'`)
+3. Commit your changes (`git commit -am 'Fix x code'`)
 4. Push to the branch (`git push origin new-feature`)
 5. Create new Pull Request
