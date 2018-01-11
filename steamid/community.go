@@ -10,6 +10,15 @@ import (
 	"strings"
 )
 
+const (
+	ResolvedViaFailed = iota
+	ResolvedViaVanityURL
+	ResolvedViaID
+	ResolvedViaID3
+	ResolvedViaID32
+	ResolvedViaID64
+)
+
 var (
 	idRegex   = regexp.MustCompile(`^STEAM_0:(0|1):[0-9]{1}[0-9]{0,8}$`)
 	id3Regex  = regexp.MustCompile(`(\[)?U:1:\d+(\])?`)
@@ -21,7 +30,9 @@ var (
 // If an invalid API key is used, a SteamID 64 may still be resolved if
 // the query is not a vanity url.
 // If no SteamID 64 could be resolved from the query, then 0 is returned.
-func ResolveID(query, apiKey string) ID64 {
+// The second argument is a uint8 represeting how the SteamID 64 may have
+// been resolved.
+func ResolveID(query, apiKey string) (ID64, uint8) {
 	query = strings.Replace(query, " ", "", -1)
 	query = strings.Trim(query, "/")
 
@@ -35,7 +46,7 @@ func ResolveID(query, apiKey string) ID64 {
 			goto isID
 		}
 
-		return ID64(id64)
+		return ID64(id64), ResolvedViaID64
 	}
 
 isID:
@@ -46,12 +57,12 @@ isID:
 			goto isID3
 		}
 
-		return id64
+		return id64, ResolvedViaID
 	}
 
 isID3:
 	if id3Regex.MatchString(strings.ToUpper(query)) {
-		return ID3(query).To64()
+		return ID3(query).To64(), ResolvedViaID3
 	}
 
 	{
@@ -99,7 +110,7 @@ isID3:
 			goto isID64
 		}
 
-		return ID64(id64)
+		return ID64(id64), ResolvedViaVanityURL
 	}
 
 isID64:
@@ -109,18 +120,18 @@ isID64:
 			goto isID32
 		}
 
-		return ID64(id64)
+		return ID64(id64), ResolvedViaID64
 	}
 
 isID32:
 	id32, err := strconv.ParseInt(query, 10, 64)
 	if err != nil {
-		return 0
+		return 0, ResolvedViaFailed
 	}
 
 	if id32 >= 2 && id32 <= 4294967295 {
-		return ID32(id32).To64()
+		return ID32(id32).To64(), ResolvedViaID32
 	}
 
-	return 0
+	return 0, ResolvedViaFailed
 }
