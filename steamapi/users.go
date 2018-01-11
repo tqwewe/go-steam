@@ -1,10 +1,10 @@
 package steamapi
 
-import "net/url"
-
-import "strconv"
-import "encoding/json"
-import "errors"
+import (
+	"net/url"
+	"strconv"
+	"errors"
+)
 
 // PlayerSummaries contains basic profile information for a Steam user.
 type PlayerSummaries struct {
@@ -27,12 +27,7 @@ type PlayerSummaries struct {
 
 // GetPlayerSummaries returns basic profile information for a list of 64-bit Steam IDs.
 func (k Key) GetPlayerSummaries(id64s ...uint64) ([]PlayerSummaries, error) {
-	var (
-		err         error
-		params      = url.Values{}
-		steamIDList string
-	)
-
+	var steamIDList string
 	for i, id64 := range id64s {
 		steamIDList += strconv.FormatUint(id64, 10)
 		if i < len(id64s)-1 {
@@ -40,21 +35,16 @@ func (k Key) GetPlayerSummaries(id64s ...uint64) ([]PlayerSummaries, error) {
 		}
 	}
 
+	var params = url.Values{}
 	params.Add("key", string(k))
 	params.Add("steamids", steamIDList)
-
-	body, err := requestAPI("ISteamUser", "GetPlayerSummaries", 2, params)
-	if err != nil {
-		return []PlayerSummaries{}, err
-	}
 
 	var respData struct {
 		Response struct {
 			Players []PlayerSummaries `json:"players"`
 		} `json:"response"`
 	}
-
-	err = json.Unmarshal(body, &respData)
+	err := requestAPI("ISteamUser", "GetPlayerSummaries", 2, params, &respData)
 	if err != nil {
 		return []PlayerSummaries{}, err
 	}
@@ -74,4 +64,23 @@ func (k Key) GetSinglePlayerSummaries(id64 uint64) (PlayerSummaries, error) {
 	}
 
 	return summaries[0], nil
+}
+
+// GetSteamLevel returns the level of a 64-bit Steam ID.
+func (k Key) GetSteamLevel(id64 uint64) (int, error) {
+	var params = url.Values{}
+	params.Add("key", string(k))
+	params.Add("steamid", strconv.FormatUint(id64, 10))
+
+	var respData struct {
+		Response struct {
+			PlayerLevel int `json:"player_level"`
+		} `json:"response"`
+	}
+	err := requestAPI("IPlayerService", "GetSteamLevel", 1, params, &respData)
+	if err != nil {
+		return 0, err
+	}
+
+	return respData.Response.PlayerLevel, nil
 }
