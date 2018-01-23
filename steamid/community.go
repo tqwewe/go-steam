@@ -46,14 +46,14 @@ func ResolveID(query, apiKey string) (ID64, uint8) {
 			goto isID
 		}
 
-		return ID64(id64), ResolvedViaID64
+		return steamID64(id64), ResolvedViaID64
 	}
 
 isID:
 	if idRegex.MatchString(query) {
-		id64 := ID(query).To64()
+		id64 := steamID(query).To64()
 
-		if len(strconv.FormatUint(uint64(id64), 10)) != 17 {
+		if len(strconv.FormatUint(id64.Uint64(), 10)) != 17 {
 			goto isID3
 		}
 
@@ -62,7 +62,7 @@ isID:
 
 isID3:
 	if id3Regex.MatchString(strings.ToUpper(query)) {
-		return ID3(query).To64(), ResolvedViaID3
+		return steamID3(query).To64(), ResolvedViaID3
 	}
 
 	{
@@ -110,7 +110,7 @@ isID3:
 			goto isID64
 		}
 
-		return ID64(id64), ResolvedViaVanityURL
+		return steamID64(id64), ResolvedViaVanityURL
 	}
 
 isID64:
@@ -120,18 +120,18 @@ isID64:
 			goto isID32
 		}
 
-		return ID64(id64), ResolvedViaID64
+		return steamID64(id64), ResolvedViaID64
 	}
 
 isID32:
 	id32, err := strconv.ParseInt(query, 10, 64)
 	if err != nil {
-		return 0, ResolvedViaFailed
+		return steamID64(0), ResolvedViaFailed
 	}
 
 	if id32 >= 2 && id32 <= 4294967295 {
-		return ID32(id32).To64(), ResolvedViaID32
+		return steamID32(id32).To64(), ResolvedViaID32
 	}
 
-	return 0, ResolvedViaFailed
+	return steamID64(0), ResolvedViaFailed
 }

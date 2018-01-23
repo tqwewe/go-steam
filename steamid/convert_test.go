@@ -3,10 +3,10 @@ package steamid
 import "testing"
 
 var (
-	expectedID ID   = "STEAM_0:0:86173181"
-	expected64 ID64 = 76561198132612090
-	expected32 ID32 = 172346362
-	expected3  ID3  = "[U:1:172346362]"
+	expectedID = steamID("STEAM_0:0:86173181")
+	expected64 = steamID64(76561198132612090)
+	expected32 = steamID32(172346362)
+	expected3  = steamID3("[U:1:172346362]")
 )
 
 func TestIDTo64(t *testing.T) {

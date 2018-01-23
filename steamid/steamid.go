@@ -45,14 +45,42 @@
 */
 package steamid
 
+type ID interface {
+	String() string
+	To64() ID64
+	To32() ID32
+	To3() ID3
+}
+
+type ID64 interface {
+	Uint64() uint64
+	ToID() ID
+	To32() ID32
+	To3() ID3
+}
+
+type ID32 interface {
+	Uint32() uint32
+	ToID() ID
+	To64() ID64
+	To3() ID3
+}
+
+type ID3 interface {
+	String() string
+	ToID() ID
+	To64() ID64
+	To32() ID32
+}
+
 // ID is a regular SteamID. STEAM_0:0:86173181
-type ID string
+type steamID string
 
 // ID64 is a SteamID 64 bit. 76561198132612090
-type ID64 uint64
+type steamID64 uint64
 
 // ID32 is a SteamID 32 bit. 172346362
-type ID32 uint32
+type steamID32 uint32
 
 // ID3 is a SteamID v3. [U:1:172346362]
-type ID3 string
+type steamID3 string
