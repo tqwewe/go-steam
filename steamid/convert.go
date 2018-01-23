@@ -27,12 +27,11 @@ func (id ID) To32() ID32 {
 // To3 converts a SteamID to a SteamID 3.
 //     STEAM_0:0:86173181 -> [U:1:172346362]
 func (id ID) To3() ID3 {
-	idParts := strings.Split(string(id), ":")
-	idLastPart, err := strconv.ParseUint(idParts[len(idParts)-1], 10, 64)
-	if err != nil {
+	id32 := id.To32()
+	if id32 == 0 {
 		return ""
 	}
-	return ID3("[U:1:" + strconv.FormatUint(idLastPart*2, 10) + "]")
+	return ID3("[U:1:" + strconv.FormatInt(int64(id32), 10) + "]")
 }
 
 // ToID converts a SteamID 64bit to a SteamID.
