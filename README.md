@@ -34,7 +34,7 @@ if err != nil {
 	log.Fatal(err)
 }
 
-fmt.Printf("Hello %s [SteamID 64: %v]", playerSummaries.PersonaName, playerSummaries.SteamID)
+fmt.Printf("Hello %s [SteamID 64: %s]", playerSummaries.PersonaName, playerSummaries.SteamID)
 ```
 
 Output
