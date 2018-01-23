@@ -8,8 +8,8 @@
 	To convert a SteamID 64 bit (ID64) to a regular SteamID (ID) for example, you would
 	use the following code:
 
-		// Define type the SteamID 64 bit as type ID64.
-		id := steamid.NewID(STEAM_0:0:86173181)
+		// Define type the SteamID as type ID.
+		id := steamid.NewID("STEAM_0:0:86173181")
 
 		// Convert id64 to a regular SteamID.
 		id64 := id64.ToID64()
