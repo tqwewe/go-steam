@@ -1,5 +1,5 @@
-# go-steam
-Go-Steam is a repository for Steam development in Golang and is planned to contain multiple packages to make developing Steam-related projects as simple and practicable and simple as possible.
+# go-steam ![Steam](steam-logo.png "Steam")
+Go-Steam is a repository for Steam development containing multiple Golang packages to make developing Steam-related projects a breeze.
 
 ### Installation
 In your command line:
