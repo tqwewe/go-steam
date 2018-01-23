@@ -84,3 +84,23 @@ type steamID32 uint32
 
 // ID3 is a SteamID v3. [U:1:172346362]
 type steamID3 string
+
+// NewID returns an ID from a string.
+func NewID(id string) ID {
+	return steamID(id)
+}
+
+// NewID64 returns an ID64 from a uint64.
+func NewID64(id64 uint64) ID64 {
+	return steamID64(id64)
+}
+
+// NewID32 returns an ID32 from a uint32.
+func NewID32(id32 uint32) ID32 {
+	return steamID32(id32)
+}
+
+// NewID3 returns an ID3 from a string.
+func NewID3(id3 string) ID3 {
+	return steamID3(id3)
+}
