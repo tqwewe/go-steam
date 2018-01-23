@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	idRegex   = regexp.MustCompile(`^STEAM_0:(0|1):[0-9]{1}[0-9]{0,8}$`)
+	idRegex   = regexp.MustCompile(`^STEAM_(0|1):(0|1):[0-9]{1}[0-9]{0,8}$`)
 	id3Regex  = regexp.MustCompile(`(\[)?U:1:\d+(\])?`)
 	id64Regex = regexp.MustCompile(`^\d{17}$`)
 )
